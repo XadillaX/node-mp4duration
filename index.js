@@ -7,6 +7,10 @@
 var fs = require("fs");
 var parser = require("./build/Release/mp4duration.node");
 
+/**
+ * parse sync
+ * @param {string|buffer} filename the filename or buffer of the mp4 file
+ */
 exports.parseSync = function(filename) {
     if(Buffer.isBuffer(filename)) {
         return parser.parseByBuffer(filename);
@@ -15,6 +19,11 @@ exports.parseSync = function(filename) {
     return parser.parseByFilename(filename);
 };
 
+/**
+ * parse
+ * @param {string|buffer} filename the filename or buffer of the mp4 file
+ * @param {function} callback the callback function
+ */
 exports.parse = function(filename, callback) {
     if(Buffer.isBuffer(filename)) {
         var parseBuff = function() {
