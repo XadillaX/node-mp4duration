@@ -1,4 +1,4 @@
-Node Mp4 Duration
+Node MP4 Duration
 ================
 
 ![node-mp4duration](http://img.shields.io/npm/v/mp4duration.svg)
