@@ -1,6 +1,8 @@
 Node Mp4 Duration
 ================
 
+![node-mp4duration](http://img.shields.io/npm/v/mp4duration.svg)
+
 A node.js package for parse mp4 duration.
 
 ## Installation
