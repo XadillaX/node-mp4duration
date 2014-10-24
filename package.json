@@ -1,0 +1,30 @@
+{
+  "name": "mp4duration",
+  "version": "0.0.1",
+  "description": "A node.js package for parse mp4 duration.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/test.js",
+    "install": "node-gyp rebuild"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/XadillaX/node-mp4duration.git"
+  },
+  "keywords": [
+    "mp4",
+    "duration",
+    "movie",
+    "video"
+  ],
+  "author": "XadillaX",
+  "license": "GPLv2",
+  "gypfile": true,
+  "bugs": {
+    "url": "https://github.com/XadillaX/node-mp4duration/issues"
+  },
+  "homepage": "https://github.com/XadillaX/node-mp4duration"
+}
