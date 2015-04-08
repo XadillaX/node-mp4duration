@@ -21,7 +21,7 @@
     "video"
   ],
   "author": "XadillaX",
-  "license": "GPLv2",
+  "license": "MIT",
   "gypfile": true,
   "bugs": {
     "url": "https://github.com/XadillaX/node-mp4duration/issues"
