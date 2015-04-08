@@ -87,8 +87,8 @@ NAN_METHOD(ParseViaFile)
         NanThrowError("Filename should be a string.");
     }
 
-    char* filename = new char[args[0]->ToString()->Length() + 1];
-    Local<String>::Cast(args[0])->WriteAscii(filename);
+    char* filename = *NanAsciiString(args[0]);
+    //Local<String>::Cast(args[0])->WriteAscii(filename);
 
     FILE* fp = fopen(filename, "rb");
     if(NULL == fp)
@@ -111,7 +111,6 @@ NAN_METHOD(ParseViaFile)
     // check is it mp4
     if(pbuf_end - pbuf < 7)
     {
-        delete []filebuf;
         NanThrowError("File is too small.");
     }
 
@@ -121,7 +120,6 @@ NAN_METHOD(ParseViaFile)
         if(i == 3) continue;
         if(sign[i] != *(pbuf + i))
         {
-            delete []filebuf;
             NanThrowError("Broken MP4 file.");
         }
     }
@@ -133,11 +131,8 @@ NAN_METHOD(ParseViaFile)
     }
     catch(...)
     {
-        delete []filebuf;
         NanThrowError("Broken file or this format is not supported.");
     }
-
-    delete []filebuf;
 
     NanReturnValue(NanNew<Number>(file_duration));
 }
