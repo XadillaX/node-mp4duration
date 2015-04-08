@@ -26,7 +26,7 @@ using namespace node;
 
 NAN_METHOD(ParseViaBuffer)
 {
-    HandleScope scope;
+    NanScope();
 
     if(args.Length() < 1)
     {
@@ -74,7 +74,7 @@ NAN_METHOD(ParseViaBuffer)
 
 NAN_METHOD(ParseViaFile)
 {
-    HandleScope scope;
+    NanScope();
 
     if(args.Length() < 1)
     {
