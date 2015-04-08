@@ -88,6 +88,7 @@ NAN_METHOD(ParseViaFile)
     }
 
     char* filename = *NanAsciiString(args[0]);
+    printf("filename: %s\n", filename);
 
     FILE* fp = fopen(filename, "rb");
     if(NULL == fp)
