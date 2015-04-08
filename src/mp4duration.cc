@@ -16,39 +16,37 @@
  * =====================================================================================
  */
 #include <node.h>
-#include <v8.h>
 #include <node_buffer.h>
 #include "parse.h"
 #include <stdio.h>
 #include <string.h>
+#include <nan.h>
 using namespace v8;
+using namespace node;
 
-Handle<Value> ParseViaBuffer(const Arguments& args)
+NAN_METHOD(ParseViaBuffer)
 {
     HandleScope scope;
 
     if(args.Length() < 1)
     {
-        ThrowException(Exception::TypeError(String::New("Wrong number of arguments.")));
-        return scope.Close(Undefined());
+        NanThrowError("Wrong number of arguments.");
     }
 
     Local<Value> arg = args[0];
     if(!node::Buffer::HasInstance(arg))
     {
-        ThrowException(Exception::TypeError(String::New("Bad argument!")));
-        return scope.Close(Undefined());
+        NanThrowError("Bad argument!");
     }
 
-    size_t size = node::Buffer::Length(arg->ToObject());
-    char* pbuf = node::Buffer::Data(arg->ToObject());
+    size_t size = Buffer::Length(arg->ToObject());
+    char* pbuf = Buffer::Data(arg->ToObject());
     char* pbuf_end = pbuf + size;
 
     // check is it mp4
     if(pbuf_end - pbuf < 7)
     {
-        ThrowException(Exception::TypeError(String::New("File is too small.")));
-        return scope.Close(Undefined());
+        NanThrowError("File is too small.");
     }
 
     char sign[] = { 0x00, 0x00, 0x00, 0x14, 0x66, 0x74, 0x79, 0x70 };
@@ -57,8 +55,7 @@ Handle<Value> ParseViaBuffer(const Arguments& args)
         if(i == 3) continue;
         if(sign[i] != *(pbuf + i))
         {
-            ThrowException(Exception::TypeError(String::New("Broken MP4 file.")));
-            return scope.Close(Undefined());
+            NanThrowError("Broken MP4 file.");
         }
     }
 
@@ -69,28 +66,25 @@ Handle<Value> ParseViaBuffer(const Arguments& args)
     }
     catch(...)
     {
-        ThrowException(Exception::TypeError(String::New("Broken file or this format is not supported.")));
-        return scope.Close(Undefined());
+        NanThrowError("Broken file or this format is not supported.");
     }
 
-    return scope.Close(Number::New(file_duration));
+    NanReturnValue(NanNew<Number>(file_duration));
 }
 
-Handle<Value> ParseViaFile(const Arguments& args)
+NAN_METHOD(ParseViaFile)
 {
     HandleScope scope;
 
     if(args.Length() < 1)
     {
-        ThrowException(Exception::TypeError(String::New("Wrong number of arguments.")));
-        return scope.Close(Undefined());
+        NanThrowError("Wrong number of arguments.");
     }
 
     Local<Value> pre_filename = args[0];
     if(!pre_filename->IsString()) 
     {
-        ThrowException(Exception::TypeError(String::New("Filename should be a string.")));
-        return scope.Close(Undefined());
+        NanThrowError("Filename should be a string.");
     }
 
     char* filename = new char[args[0]->ToString()->Length() + 1];
@@ -99,8 +93,7 @@ Handle<Value> ParseViaFile(const Arguments& args)
     FILE* fp = fopen(filename, "rb");
     if(NULL == fp)
     {
-        ThrowException(Exception::TypeError(String::New("Can't open this file.")));
-        return scope.Close(Undefined());
+        NanThrowError("Can't open this file.");
     }
 
     unsigned int filesize;
@@ -119,8 +112,7 @@ Handle<Value> ParseViaFile(const Arguments& args)
     if(pbuf_end - pbuf < 7)
     {
         delete []filebuf;
-        ThrowException(Exception::TypeError(String::New("File is too small.")));
-        return scope.Close(Undefined());
+        NanThrowError("File is too small.");
     }
 
     char sign[] = { 0x00, 0x00, 0x00, 0x14, 0x66, 0x74, 0x79, 0x70 };
@@ -130,8 +122,7 @@ Handle<Value> ParseViaFile(const Arguments& args)
         if(sign[i] != *(pbuf + i))
         {
             delete []filebuf;
-            ThrowException(Exception::TypeError(String::New("Broken MP4 file.")));
-            return scope.Close(Undefined());
+            NanThrowError("Broken MP4 file.");
         }
     }
 
@@ -143,22 +134,21 @@ Handle<Value> ParseViaFile(const Arguments& args)
     catch(...)
     {
         delete []filebuf;
-        ThrowException(Exception::TypeError(String::New("Broken file or this format is not supported.")));
-        return scope.Close(Undefined());
+        NanThrowError("Broken file or this format is not supported.");
     }
 
     delete []filebuf;
 
-    return scope.Close(Number::New(file_duration));
+    NanReturnValue(NanNew<Number>(file_duration));
 }
 
-void Init(Handle<Object> exports)
+void InitAll(Handle<Object> exports)
 {
-    exports->Set(String::NewSymbol("parseByFilename"),
-            FunctionTemplate::New(ParseViaFile)->GetFunction());
-    exports->Set(String::NewSymbol("parseByBuffer"),
-            FunctionTemplate::New(ParseViaBuffer)->GetFunction());
+    exports->Set(NanNew<String>("parseByFilename"),
+            NanNew<FunctionTemplate>(ParseViaFile)->GetFunction());
+    exports->Set(NanNew<String>("parseByBuffer"),
+            NanNew<FunctionTemplate>(ParseViaBuffer)->GetFunction());
 }
 
-NODE_MODULE(mp4duration, Init);
+NODE_MODULE(mp4duration, InitAll);
 
