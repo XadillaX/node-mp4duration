@@ -46,13 +46,14 @@ describe("parse mpeg4 files", function() {
         });
     });
 
-    it("should be ok while parsing sync", function() {
+    it("should be ok while parsing sync", function(done) {
         var buff = fs.readFileSync(MP4);
         parser.parseSync(buff).should.within(5, 6);
         parser.parseSync(MP4).should.within(5, 6);
         buff = fs.readFileSync(M4A);
         parser.parseSync(buff).should.within(4, 5);
         parser.parseSync(M4A).should.within(4, 5);
+        done();
     });
 
     it("shouldn't parse", function(done) {

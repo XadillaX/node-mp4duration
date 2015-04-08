@@ -27,8 +27,9 @@ exports.parseSync = function(filename) {
 exports.parse = function(filename, callback) {
     if(Buffer.isBuffer(filename)) {
         var parseBuff = function() {
+            var result;
             try {
-                var result = parser.parseByBuffer(filename);
+                result = parser.parseByBuffer(filename);
             } catch(e) {
                 return callback(e);
             }
@@ -42,8 +43,9 @@ exports.parse = function(filename, callback) {
     fs.readFile(filename, function(err, buff) {
         if(err) return callback(err);
 
+        var result;
         try {
-            var result = parser.parseByBuffer(buff);
+            result = parser.parseByBuffer(buff);
         } catch(e) {
             return callback(e);
         }

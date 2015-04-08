@@ -92,7 +92,9 @@ NAN_METHOD(ParseViaFile)
     FILE* fp = fopen(filename, "rb");
     if(NULL == fp)
     {
-        return NanThrowError("Can't open this file.");
+        char temp[32 + strlen(filename)];
+        sprintf(temp, "Can't open this file: %s.", filename);
+        return NanThrowError(temp);
     }
 
     unsigned int filesize;
