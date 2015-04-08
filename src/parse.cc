@@ -91,7 +91,6 @@ const char* ReadBoxHeader(Mp4BoxHeader *p_head, const char *buf)
 
 void ReadMvhdDuration(const char* buf, double* fileDuration)
 {
-    unsigned int i;
     Mp4BoxHeader header;
     buf = ReadBoxHeader(&header, buf);
 
