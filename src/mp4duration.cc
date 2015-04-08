@@ -87,7 +87,8 @@ NAN_METHOD(ParseViaFile)
         return NanThrowError("Filename should be a string.");
     }
 
-    char* filename = *NanAsciiString(args[0]);
+    NanAsciiString afilename = NanAsciiString(args[0]);
+    char* filename = *afilename;
     printf("filename: %s\n", filename);
 
     FILE* fp = fopen(filename, "rb");
