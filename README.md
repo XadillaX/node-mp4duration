@@ -1,7 +1,6 @@
-Node MP4 Duration
-================
+# Node MP4 Duration
 
-![node-mp4duration](http://img.shields.io/npm/v/mp4duration.svg)
+[![node-mp4duration](http://img.shields.io/npm/v/mp4duration.svg)](https://www.npmjs.com/package/mp4duration) [![Dependency Status](https://img.shields.io/david/XadillaX/mp4duration.svg)](https://www.npmjs.com/package/mp4duration) [![TravisCI](https://img.shields.io/travis/XadillaX/node-mp4duration/master.svg)](https://travis-ci.org/XadillaX/node-mp4duration) [![Coveralls](https://img.shields.io/coveralls/XadillaX/node-mp4duration/master.svg)](https://coveralls.io/r/XadillaX/node-mp4duration)
 
 A node.js package for parse mp4 duration.
 
@@ -48,7 +47,7 @@ console.log(parser.parseSync(filename));
 
 ## Contribute
 
-You're welcome to pull requests!
+You're welcome to make pull requests!
 
 「雖然我覺得不怎麼可能有人會關注我」
 
