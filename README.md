@@ -1,6 +1,6 @@
 # Node MP4 Duration
 
-[![node-mp4duration](http://img.shields.io/npm/v/mp4duration.svg)](https://www.npmjs.com/package/mp4duration) [![Dependency Status](https://img.shields.io/david/XadillaX/node-mp4duration.svg)](https://www.npmjs.com/package/mp4duration) [![TravisCI](https://img.shields.io/travis/XadillaX/node-mp4duration/master.svg)](https://travis-ci.org/XadillaX/node-mp4duration) [![Coveralls](https://img.shields.io/coveralls/XadillaX/node-mp4duration/master.svg)](https://coveralls.io/r/XadillaX/node-mp4duration)
+[![node-mp4duration](http://img.shields.io/npm/v/mp4duration.svg)](https://www.npmjs.com/package/mp4duration) [![Dependency Status](https://img.shields.io/david/XadillaX/node-mp4duration.svg)](https://david-dm.org/xadillax/node-mp4duration) [![TravisCI](https://img.shields.io/travis/XadillaX/node-mp4duration/master.svg)](https://travis-ci.org/XadillaX/node-mp4duration) [![Coveralls](https://img.shields.io/coveralls/XadillaX/node-mp4duration/master.svg)](https://coveralls.io/r/XadillaX/node-mp4duration)
 
 A node.js package for parse mp4 duration.
 
