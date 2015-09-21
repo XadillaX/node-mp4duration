@@ -17,6 +17,7 @@
  */
 #include <node.h>
 #include <node_buffer.h>
+#include <node_object_wrap.h>
 #include "parse.h"
 #include <stdio.h>
 #include <string.h>
@@ -26,27 +27,27 @@ using namespace node;
 
 NAN_METHOD(ParseViaBuffer)
 {
-    NanScope();
+    Nan::HandleScope scope;
 
-    if(args.Length() < 1)
+    if(info.Length() < 1)
     {
-        return NanThrowError("Wrong number of arguments.");
+        return Nan::ThrowError("Wrong number of arguments.");
     }
 
-    Local<Value> arg = args[0];
-    if(!node::Buffer::HasInstance(arg))
+    if(!node::Buffer::HasInstance(info[0]))
     {
-        return NanThrowError("Bad argument!");
+        return Nan::ThrowError("Bad argument!");
     }
 
-    size_t size = Buffer::Length(arg->ToObject());
-    char* pbuf = Buffer::Data(arg->ToObject());
+    Local<Object> buffer_obj = info[0]->ToObject();
+    size_t size = Buffer::Length(buffer_obj);
+    char* pbuf = Buffer::Data(buffer_obj);
     char* pbuf_end = pbuf + size;
 
     // check is it mp4
     if(pbuf_end - pbuf < 7)
     {
-        return NanThrowError("File is too small.");
+        return Nan::ThrowError("File is too small.");
     }
 
     char sign[] = { 0x00, 0x00, 0x00, 0x14, 0x66, 0x74, 0x79, 0x70 };
@@ -55,7 +56,7 @@ NAN_METHOD(ParseViaBuffer)
         if(i == 3) continue;
         if(sign[i] != *(pbuf + i))
         {
-            return NanThrowError("Broken MP4 file.");
+            return Nan::ThrowError("Broken MP4 file.");
         }
     }
 
@@ -66,28 +67,28 @@ NAN_METHOD(ParseViaBuffer)
     }
     catch(...)
     {
-        return NanThrowError("Broken file or this format is not supported.");
+        return Nan::ThrowError("Broken file or this format is not supported.");
     }
 
-    NanReturnValue(NanNew<Number>(file_duration));
+    info.GetReturnValue().Set(Nan::New<Number>(file_duration));
 }
 
 NAN_METHOD(ParseViaFile)
 {
-    NanScope();
+    Nan::HandleScope scope;
 
-    if(args.Length() < 1)
+    if(info.Length() < 1)
     {
-        return NanThrowError("Wrong number of arguments.");
+        return Nan::ThrowError("Wrong number of arguments.");
     }
 
-    Local<Value> pre_filename = args[0];
+    Local<Value> pre_filename = info[0];
     if(!pre_filename->IsString()) 
     {
-        return NanThrowError("Filename should be a string.");
+        return Nan::ThrowError("Filename should be a string.");
     }
 
-    NanAsciiString afilename(args[0]);
+    String::Utf8Value afilename(info[0]->ToString());
     char* filename = *afilename;
 
     FILE* fp = fopen(filename, "rb");
@@ -95,7 +96,7 @@ NAN_METHOD(ParseViaFile)
     {
         char temp[32 + strlen(filename)];
         sprintf(temp, "Can't open this file: %s.", filename);
-        return NanThrowError(temp);
+        return Nan::ThrowError(temp);
     }
 
     unsigned int filesize;
@@ -113,7 +114,7 @@ NAN_METHOD(ParseViaFile)
     // check is it mp4
     if(pbuf_end - pbuf < 7)
     {
-        return NanThrowError("File is too small.");
+        return Nan::ThrowError("File is too small.");
     }
 
     char sign[] = { 0x00, 0x00, 0x00, 0x14, 0x66, 0x74, 0x79, 0x70 };
@@ -122,7 +123,7 @@ NAN_METHOD(ParseViaFile)
         if(i == 3) continue;
         if(sign[i] != *(pbuf + i))
         {
-            return NanThrowError("Broken MP4 file.");
+            return Nan::ThrowError("Broken MP4 file.");
         }
     }
 
@@ -133,19 +134,18 @@ NAN_METHOD(ParseViaFile)
     }
     catch(...)
     {
-        return NanThrowError("Broken file or this format is not supported.");
+        return Nan::ThrowError("Broken file or this format is not supported.");
     }
 
-    NanReturnValue(NanNew<Number>(file_duration));
+    info.GetReturnValue().Set(Nan::New<Number>(file_duration));
 }
 
-void InitAll(Handle<Object> exports)
+NAN_MODULE_INIT(InitAll)
 {
-    exports->Set(NanNew<String>("parseByFilename"),
-            NanNew<FunctionTemplate>(ParseViaFile)->GetFunction());
-    exports->Set(NanNew<String>("parseByBuffer"),
-            NanNew<FunctionTemplate>(ParseViaBuffer)->GetFunction());
+    Nan::Set(target, Nan::New<String>("parseByFilename").ToLocalChecked(),
+            Nan::GetFunction(Nan::New<FunctionTemplate>(ParseViaFile)).ToLocalChecked());
+    Nan::Set(target, Nan::New<String>("parseByBuffer").ToLocalChecked(),
+            Nan::GetFunction(Nan::New<FunctionTemplate>(ParseViaBuffer)).ToLocalChecked());
 }
 
 NODE_MODULE(mp4duration, InitAll);
-
