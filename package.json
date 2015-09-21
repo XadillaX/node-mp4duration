@@ -1,6 +1,6 @@
 {
   "name": "mp4duration",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A node.js package for parse mp4 duration.",
   "main": "index.js",
   "directories": {
