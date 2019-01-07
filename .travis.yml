@@ -3,10 +3,13 @@ node_js:
   - "0.10"
   - "0.12"
   - "4.0"
+matrix:
+  include:
+    - os: linux
+    - os: osx
+      osx_image: xcode10
 after_script: istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
 install:
-  - export CXX="g++-4.8" CXX="gcc-4.8"
-  - $CXX --version
   - npm install -g istanbul
   - npm install
 addons:
