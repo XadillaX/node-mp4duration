@@ -1,9 +1,11 @@
 language: node_js
-env:
-  matrix:
-  - TRAVIS_NODE_VERSION="0.10"
-  - TRAVIS_NODE_VERSION="0.12"
-  - TRAVIS_NODE_VERSION="4"
+node_js:
+  - "0.10"
+  - "0.12"
+  - "4.0"
+os:
+  - linux
+  - osx
 matrix:
   include:
     - os: linux
