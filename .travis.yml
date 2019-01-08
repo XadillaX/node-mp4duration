@@ -9,7 +9,8 @@ os:
 matrix:
   include:
     - os: linux
-    - osx_image: xcode10
+    - os: osx
+      osx_image: xcode10
   exclude:
     - os: osx
       node_js: "0.12"
