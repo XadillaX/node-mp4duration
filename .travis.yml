@@ -6,8 +6,6 @@ node_js:
 os:
   - linux
   - osx
-osx_image:
-  - xcode10
 matrix:
   include:
     - os: linux
