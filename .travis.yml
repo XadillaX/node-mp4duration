@@ -11,6 +11,7 @@ matrix:
     - os: linux
     - os: osx
       osx_image: xcode10
+      node_js: "4.0"
   exclude:
     - os: osx
       node_js: "0.12"
