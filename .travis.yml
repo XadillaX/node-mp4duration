@@ -6,11 +6,8 @@ node_js:
 os:
   - linux
   - osx
-matrix:
-  include:
-    - os: linux
-    - os: osx
-      osx_image: xcode10
+osx_image:
+  - xcode10
 after_script: istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
 install:
   - if [[ $TRAVIS_OS_NAME == "linux" ]]; then export CXX=g++-4.8; fi
