@@ -1,17 +1,15 @@
 language: node_js
 node_js:
-  - "0.10"
-  - "0.12"
   - "4.0"
+  - "6.0"
+  - "8.0"
+  - "10.0"
 matrix:
   include:
     - os: linux
     - os: osx
       osx_image: xcode10
-      node_js: "4.0"
-  exclude:
-    - os: osx
-      node_js: "0.12"
+      node_js: "8.0"
 after_script: istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
 install:
   - if [[ $TRAVIS_OS_NAME == "linux" ]]; then export CXX=g++-4.8; fi
